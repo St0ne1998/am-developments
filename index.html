@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.M Development — Websites, CVs, Apps &amp; Brand Design</title>
+<meta name="description" content="A.M Development builds professional websites, CVs, mobile apps, marketing and logo design. Working from A.M to A.M so quality never sleeps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050b1a;
+    --bg-panel:#0a1428;
+    --bg-panel-2:#0d1830;
+    --accent:#00d9ff;
+    --accent-2:#2f6bff;
+    --glow:#7df9ff;
+    --text:#e7f1ff;
+    --muted:#8fa3c4;
+    --line:rgba(125,249,255,0.14);
+    --line-strong:rgba(125,249,255,0.3);
+    --success:#3ddc97;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    position:relative;
+  }
+  ::selection{background:var(--accent); color:#001018;}
+
+  h1,h2,h3,h4{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  section{position:relative; padding:100px 6vw;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:''; width:7px; height:7px; border-radius:50%;
+    background:var(--accent); box-shadow:0 0 10px 2px var(--accent);
+  }
+  .section-title{ font-size:clamp(1.8rem,3.6vw,2.7rem); margin-bottom:16px; }
+  .section-lede{ color:var(--muted); max-width:620px; font-size:1.02rem; }
+
+  /* ---------- Constellation starfield background ---------- */
+  #constellation{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    width:100%; height:100%; display:block;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 6vw;
+    background:linear-gradient(180deg, rgba(5,11,26,0.92), rgba(5,11,26,0.55));
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .logo-mark{ display:flex; align-items:center; gap:12px; }
+  .logo-mark span.wordmark{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem; letter-spacing:0.02em;
+  }
+  .logo-mark span.wordmark small{
+    display:block; font-family:'JetBrains Mono',monospace; font-weight:400;
+    font-size:0.62rem; letter-spacing:0.14em; color:var(--muted); text-transform:uppercase;
+  }
+  nav ul{ list-style:none; display:flex; gap:34px; }
+  nav a{ font-size:0.92rem; color:var(--muted); transition:color .2s; position:relative; }
+  nav a:hover{ color:var(--text); }
+  .nav-cta{
+    background:linear-gradient(120deg, var(--accent-2), var(--accent));
+    color:#001018 !important; padding:10px 20px; border-radius:100px;
+    font-weight:600; font-size:0.85rem !important;
+  }
+  .burger{ display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:60; }
+  .burger span{ width:26px; height:2px; background:var(--text); display:block; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding:140px 6vw 80px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center;
+    width:100%; position:relative; z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5.2vw, 4.1rem);
+    line-height:1.06;
+    margin-bottom:22px;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(100deg, var(--glow), var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lede{ color:var(--muted); font-size:1.08rem; max-width:520px; margin-bottom:34px; }
+  .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 26px; border-radius:100px; font-weight:600; font-size:0.94rem;
+    border:1px solid transparent; cursor:pointer; transition:transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn-primary{
+    background:linear-gradient(120deg, var(--accent-2), var(--accent));
+    color:#001018;
+    box-shadow:0 0 0 1px rgba(0,217,255,0.3), 0 10px 30px -8px rgba(0,217,255,0.55);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 0 0 1px rgba(0,217,255,0.5), 0 14px 34px -6px rgba(0,217,255,0.7); }
+  .btn-ghost{
+    background:transparent; border-color:var(--line-strong); color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+
+  .hero-stats{ display:flex; gap:34px; margin-top:52px; flex-wrap:wrap; }
+  .hero-stats div b{ display:block; font-family:'Space Grotesk',sans-serif; font-size:1.5rem; color:var(--text); }
+  .hero-stats div span{ font-size:0.78rem; color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; }
+
+  /* ---------- Rotating Earth ---------- */
+  .earth-stage{
+    display:flex; align-items:center; justify-content:center;
+    position:relative; height:520px;
+  }
+  .planet-glow-back{
+    position:absolute; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(0,217,255,0.28) 0%, rgba(217,0,180,0.14) 45%, transparent 72%);
+    filter:blur(6px);
+    animation:glowPulse 5s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{ transform:scale(1); opacity:0.85; }
+    50%{ transform:scale(1.06); opacity:1; }
+  }
+  .planet-img{
+    width:340px; height:340px; border-radius:50%;
+    object-fit:cover;
+    mix-blend-mode:screen;
+    filter:drop-shadow(0 0 40px rgba(0,217,255,0.45)) drop-shadow(0 0 90px rgba(180,0,220,0.25));
+    animation:floatPlanet 7s ease-in-out infinite;
+    position:relative; z-index:2;
+  }
+  @keyframes floatPlanet{
+    0%,100%{ transform:translateY(0px); }
+    50%{ transform:translateY(-16px); }
+  }
+  .sat{
+    position:absolute; width:10px; height:10px; border-radius:2px;
+    background:var(--accent); box-shadow:0 0 10px 2px var(--accent);
+    top:50%; left:50%; z-index:3;
+    animation:satOrbit 9s linear infinite;
+  }
+  @keyframes satOrbit{
+    from{ transform: rotate(0deg) translateX(230px) rotate(0deg); }
+    to{ transform: rotate(360deg) translateX(230px) rotate(-360deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .orbit-ring, .sat, .planet-img, .planet-glow-back{ animation:none !important; }
+  }
+
+  /* ---------- Marquee tag strip ---------- */
+  .tag-strip{
+    display:flex; gap:14px; flex-wrap:wrap; margin-top:40px;
+  }
+  .tag-strip span{
+    border:1px solid var(--line); padding:7px 14px; border-radius:100px;
+    font-size:0.76rem; font-family:'JetBrains Mono',monospace; color:var(--muted);
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+  .about-grid p{ color:var(--muted); margin-bottom:16px; }
+  .clock-strip{
+    display:flex; align-items:center; gap:18px; margin-top:26px;
+    border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px;
+    background:linear-gradient(120deg, rgba(0,217,255,0.05), transparent);
+  }
+  .clock-strip .dot-time{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem;
+    background:linear-gradient(100deg,var(--glow),var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    white-space:nowrap;
+  }
+  .about-features{ display:grid; gap:18px; }
+  .feature-card{
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 24px; background:var(--bg-panel);
+    transition:border-color .2s, transform .2s;
+  }
+  .feature-card:hover{ border-color:var(--line-strong); transform:translateY(-3px); }
+  .feature-card h4{ font-size:1rem; margin-bottom:6px; display:flex; align-items:center; gap:10px;}
+  .feature-card h4 .ico{ color:var(--accent); font-family:'JetBrains Mono',monospace; }
+  .feature-card p{ color:var(--muted); font-size:0.9rem; margin:0; }
+
+  /* ---------- Services ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:22px; margin-top:50px;
+  }
+  .service-card{
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:30px 26px; background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+    position:relative; overflow:hidden;
+    transition:transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .service-card::before{
+    content:''; position:absolute; top:-60%; right:-40%; width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle, rgba(0,217,255,0.16), transparent 70%);
+  }
+  .service-card:hover{ transform:translateY(-6px); border-color:var(--accent); box-shadow:0 20px 40px -20px rgba(0,217,255,0.4); }
+  .service-num{ font-family:'JetBrains Mono',monospace; color:var(--accent); font-size:0.78rem; letter-spacing:0.1em; }
+  .service-card h3{ font-size:1.2rem; margin:14px 0 10px; }
+  .service-card p{ color:var(--muted); font-size:0.92rem; }
+
+  /* ---------- Testimonials ---------- */
+  .testi-scroll{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:22px; margin-top:50px;
+  }
+  .testi-card{
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px; background:var(--bg-panel);
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .stars-row{ color:var(--accent); letter-spacing:3px; font-size:0.9rem; }
+  .testi-card p.quote{ color:var(--text); font-size:0.95rem; flex:1; }
+  .testi-person{ display:flex; align-items:center; gap:12px; }
+  .avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent-2), var(--accent));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; color:#001018; font-size:0.85rem;
+  }
+  .testi-person b{ display:block; font-size:0.88rem; }
+  .testi-person span{ color:var(--muted); font-size:0.76rem; }
+
+  /* ---------- Booking form ---------- */
+  .booking-wrap{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:50px; margin-top:50px; align-items:start;
+  }
+  .booking-side{ border:1px solid var(--line); border-radius:var(--radius); padding:28px; background:var(--bg-panel); }
+  .booking-side h4{ font-size:1rem; margin-bottom:14px; }
+  .booking-side ul{ list-style:none; display:grid; gap:12px; }
+  .booking-side li{ color:var(--muted); font-size:0.9rem; display:flex; gap:10px; align-items:flex-start; }
+  .booking-side li::before{ content:'▹'; color:var(--accent); }
+
+  form.booking-form{
+    border:1px solid var(--line); border-radius:var(--radius); padding:32px;
+    background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+    display:grid; gap:20px;
+  }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field label{ font-size:0.78rem; color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; text-transform:uppercase; }
+  .field input, .field select, .field textarea{
+    background:rgba(5,11,26,0.7); border:1px solid var(--line); border-radius:8px;
+    padding:13px 14px; color:var(--text); font-family:'Inter',sans-serif; font-size:0.95rem;
+    outline:none; transition:border-color .2s, box-shadow .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,217,255,0.15);
+  }
+  .field select option{ background:#0a1428; color:var(--text); }
+  .submit-row{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .form-note{ color:var(--muted); font-size:0.8rem; }
+  #formStatus{ font-size:0.85rem; font-family:'JetBrains Mono',monospace; }
+  #formStatus.ok{ color:var(--success); }
+  #formStatus.err{ color:#ff6b6b; }
+
+  /* ---------- Donate ---------- */
+  .donate-box{
+    margin-top:50px; border:1px solid var(--line-strong); border-radius:var(--radius);
+    padding:38px; display:flex; justify-content:space-between; align-items:center; gap:30px; flex-wrap:wrap;
+    background:radial-gradient(circle at 15% 20%, rgba(0,217,255,0.12), transparent 60%), var(--bg-panel);
+  }
+  .donate-box h3{ font-size:1.3rem; margin-bottom:8px; }
+  .donate-box p{ color:var(--muted); max-width:460px; font-size:0.92rem; }
+  .btn-paypal{
+    background:linear-gradient(120deg,#00457C,#0079C1);
+    color:#fff; box-shadow:0 10px 30px -10px rgba(0,121,193,0.6);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:50px; }
+  .contact-cards{ display:grid; gap:16px; align-content:start; }
+  .contact-card{
+    border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px;
+    display:flex; align-items:center; gap:16px; background:var(--bg-panel);
+  }
+  .contact-card .ic{
+    width:42px; height:42px; border-radius:10px; flex:none;
+    background:linear-gradient(135deg, var(--accent-2), var(--accent));
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:#001018;
+  }
+  .contact-card b{ display:block; font-size:0.95rem; }
+  .contact-card span{ color:var(--muted); font-size:0.85rem; word-break:break-word; }
+  .map-frame{ border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); min-height:320px; }
+  .map-frame iframe{ width:100%; height:100%; min-height:320px; border:0; filter:invert(92%) hue-rotate(180deg) contrast(90%); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:50px 6vw 30px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+  }
+  footer .foot-left{ display:flex; align-items:center; gap:14px; }
+  footer p{ color:var(--muted); font-size:0.82rem; }
+  footer .foot-links{ display:flex; gap:22px; }
+  footer .foot-links a{ color:var(--muted); font-size:0.85rem; }
+  footer .foot-links a:hover{ color:var(--accent); }
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .earth-stage{ order:-1; height:360px; }
+    .about-grid, .contact-grid, .booking-wrap{ grid-template-columns:1fr; }
+    nav{ position:fixed; top:0; right:0; height:100vh; width:min(78vw,320px);
+      background:var(--bg-panel); flex-direction:column; padding:100px 30px; border-left:1px solid var(--line);
+      transform:translateX(100%); transition:transform .35s ease; z-index:55;
+    }
+    nav.open{ transform:translateX(0); }
+    nav ul{ flex-direction:column; gap:22px; }
+    .burger{ display:flex; }
+    .form-row{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){
+    section{ padding:70px 5vw; }
+    .planet-img{ width:210px; height:210px; }
+    .planet-glow-back{ width:280px; height:280px; }
+    .sat{ animation-name:satOrbitSmall; }
+    @keyframes satOrbitSmall{
+      from{ transform: rotate(0deg) translateX(150px) rotate(0deg); }
+      to{ transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+    }
+    .donate-box{ flex-direction:column; text-align:center; align-items:center; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="constellation"></canvas>
+
+<header>
+  <a href="#top" class="logo-mark">
+    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="21" cy="21" r="19.5" stroke="url(#gradRing)" stroke-width="1.5"/>
+      <path d="M21 2.5A18.5 18.5 0 0 1 21 39.5" stroke="#00d9ff" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.7"/>
+      <text x="21" y="26" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700" fill="#e7f1ff">AM</text>
+      <circle cx="21" cy="21" r="19.5" stroke="#00d9ff" stroke-width="0.6" opacity="0.5">
+        <animate attributeName="r" values="17;20;17" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.05;0.6" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <defs>
+        <linearGradient id="gradRing" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#7df9ff"/>
+          <stop offset="1" stop-color="#2f6bff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span class="wordmark">A.M Development<small>A.M to A.M — Quality Never Sleeps</small></span>
+  </a>
+
+  <nav id="siteNav">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#booking">Book a slot</a></li>
+      <li><a href="#donate">Donate</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#booking" class="nav-cta">Get a quote</a></li>
+    </ul>
+  </nav>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Digital studio · Based in Nelspruit, South Africa</div>
+      <h1>We build the <span class="grad">digital presence</span> your business deserves.</h1>
+      <p class="lede">A.M Development designs and ships professional websites, standout CVs, mobile apps, marketing campaigns and logos — engineered with the same discipline from A.M to A.M, every single day.</p>
+      <div class="hero-ctas">
+        <a href="#booking" class="btn btn-primary">Book an appointment →</a>
+        <a href="#contact" class="btn btn-ghost">See past projects</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>A.M – A.M</b><span>Always in motion</span></div>
+        <div><b>5+</b><span>Services offered</span></div>
+        <div><b>100%</b><span>Mobile-first builds</span></div>
+      </div>
+      <div class="tag-strip">
+        <span>#WebDevelopment</span><span>#ProfessionalCVs</span><span>#MobileApps</span><span>#Marketing</span><span>#LogoDesign</span>
+      </div>
+    </div>
+
+    <div class="earth-stage">
+      <div class="planet-glow-back"></div>
+      <img class="planet-img" src="earth-globe.jpg" alt="Glowing 3D planet Earth with visible continents">
+      <div class="sat"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="eyebrow">About us</div>
+    <h2 class="section-title">Why "A.M" Development?</h2>
+    <p class="section-lede">The name says it all — we work from A.M to A.M, meaning our clients get quality, round-the-clock commitment on every project, no matter the size.</p>
+  </div>
+
+  <div class="about-grid" style="margin-top:44px;">
+    <div class="reveal">
+      <p>A.M Development is a South African digital studio built on one simple promise: give every client work that looks and performs like it came from a much bigger agency. We plan, design and build in tight, fast cycles — no jargon, no wasted time.</p>
+      <p>From a first-time freelancer needing a stand-out CV, to a growing business that needs a full web presence, mobile app and marketing push, we tailor the process to what actually moves the needle for you.</p>
+      <div class="clock-strip">
+        <div class="dot-time mono">A.M → A.M</div>
+        <div style="color:var(--muted); font-size:0.88rem;">We start early and finish late — your project doesn't wait in a queue.</div>
+      </div>
+      <a href="#contact" class="btn btn-ghost" style="margin-top:26px;">Contact us to see past projects →</a>
+    </div>
+
+    <div class="about-features">
+      <div class="feature-card">
+        <h4><span class="ico">◆</span> Built around you</h4>
+        <p>Every website, CV or app is designed from scratch for your goals — never a recycled template.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="ico">◆</span> Mobile-first, always</h4>
+        <p>Everything we ship is tested and tuned to work perfectly on phones, tablets and desktops.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="ico">◆</span> One team, full pipeline</h4>
+        <p>Design, build, copy and launch handled by the same people — nothing gets lost in handoffs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="eyebrow">What we do</div>
+    <h2 class="section-title">Services engineered for growth</h2>
+    <p class="section-lede">Pick a single service or bundle them together — we build the full digital footprint for your brand.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">/ 01</div>
+      <h3>Professional Websites</h3>
+      <p>Fast, responsive, search-friendly websites built to convert visitors into clients — from landing pages to full business sites.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">/ 02</div>
+      <h3>Professional CVs</h3>
+      <p>Recruiter-ready CVs and portfolios that present your experience clearly and help you stand out from the pile.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">/ 03</div>
+      <h3>Mobile Apps</h3>
+      <p>Clean, functional mobile app builds for iOS and Android, designed around how your customers actually use their phones.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">/ 04</div>
+      <h3>Marketing</h3>
+      <p>Campaigns, content and strategy that get your brand seen by the right people, on the right platforms.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">/ 05</div>
+      <h3>Logo &amp; Brand Design</h3>
+      <p>Distinctive logos and visual identities that make your business instantly recognisable.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="reveal">
+    <div class="eyebrow">Client reviews</div>
+    <h2 class="section-title">Trusted by growing businesses</h2>
+    <p class="section-lede">A few words from clients who booked a slot and walked away with a finished product.</p>
+  </div>
+
+  <div class="testi-scroll">
+    <div class="testi-card reveal">
+      <div class="stars-row">★★★★★</div>
+      <p class="quote">Our new website loads fast and actually brings in enquiries now. The team explained everything in plain language.</p>
+      <div class="testi-person">
+        <div class="avatar">TN</div>
+        <div><b>Thabo N.</b><span>Retail business owner</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars-row">★★★★★</div>
+      <p class="quote">My CV got a complete redesign and I started getting interview calls within two weeks of using it.</p>
+      <div class="testi-person">
+        <div class="avatar">LM</div>
+        <div><b>Lindiwe M.</b><span>Job seeker</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars-row">★★★★★</div>
+      <p class="quote">They built our booking app from scratch and kept us updated at every step. Genuinely professional service.</p>
+      <div class="testi-person">
+        <div class="avatar">RK</div>
+        <div><b>Riaan K.</b><span>Small business founder</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars-row">★★★★★</div>
+      <p class="quote">Our new logo and brand pack finally makes us look as established as we feel. Worth every cent.</p>
+      <div class="testi-person">
+        <div class="avatar">NP</div>
+        <div><b>Nomvula P.</b><span>Startup founder</span></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars-row">★★★★★</div>
+      <p class="quote">The marketing plan they put together doubled our social media engagement in a single month.</p>
+      <div class="testi-person">
+        <div class="avatar">SD</div>
+        <div><b>Sipho D.</b><span>E-commerce owner</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="reveal">
+    <div class="eyebrow">Book an appointment</div>
+    <h2 class="section-title">Let's plan your project</h2>
+    <p class="section-lede">Pick a day and time that works for you and tell us a bit about what you need — we'll confirm your slot by email or WhatsApp.</p>
+  </div>
+
+  <div class="booking-wrap">
+    <div class="booking-side reveal">
+      <h4>What happens next?</h4>
+      <ul>
+        <li>We review your booking and confirm the time within 24 hours.</li>
+        <li>You'll receive a short call or WhatsApp message to confirm scope.</li>
+        <li>We start your project and keep you updated at every stage.</li>
+      </ul>
+      <h4 style="margin-top:26px;">Prefer to message directly?</h4>
+      <ul>
+        <li>WhatsApp: 082 794 8113</li>
+        <li>Email: amusementherith@icloud.com</li>
+      </ul>
+    </div>
+
+    <form class="booking-form reveal" id="bookingForm" action="https://formspree.io/f/mykrznlj" method="POST">
+      <div class="form-row">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="Name" placeholder="Your full name" required>
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp number</label>
+          <input type="tel" id="whatsapp" name="WhatsApp Number" placeholder="e.g. 082 794 8113" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="Email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label for="service">Service needed</label>
+          <select id="service" name="Service Needed" required>
+            <option value="" disabled selected>Choose a service</option>
+            <option>Professional Website</option>
+            <option>Professional CV</option>
+            <option>Mobile App</option>
+            <option>Marketing</option>
+            <option>Logo / Brand Design</option>
+            <option>Multiple Services</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="date">Preferred date</label>
+          <input type="date" id="date" name="Preferred Date" required>
+        </div>
+        <div class="field">
+          <label for="time">Preferred time</label>
+          <select id="time" name="Preferred Time" required>
+            <option value="" disabled selected>Choose a time</option>
+            <option>08:00</option>
+            <option>09:00</option>
+            <option>10:00</option>
+            <option>11:00</option>
+            <option>12:00</option>
+            <option>13:00</option>
+            <option>14:00</option>
+            <option>15:00</option>
+            <option>16:00</option>
+            <option>17:00</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="hear">How did you hear about us?</label>
+        <select id="hear" name="How Did You Hear About Us" required>
+          <option value="" disabled selected>Choose an option</option>
+          <option>Social Media</option>
+          <option>Google Search</option>
+          <option>Friend / Referral</option>
+          <option>WhatsApp</option>
+          <option>Saw a past project</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="notes">Anything else we should know? (optional)</label>
+        <textarea id="notes" name="Additional Notes" rows="3" placeholder="Tell us a bit more about your project..."></textarea>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary">Confirm booking →</button>
+        <span class="form-note">We'll never share your details with anyone else.</span>
+      </div>
+      <div id="formStatus" class="mono"></div>
+    </form>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section id="donate">
+  <div class="reveal">
+    <div class="eyebrow">Support the studio</div>
+    <h2 class="section-title">Enjoying our work?</h2>
+    <p class="section-lede">If A.M Development has helped you or you'd simply like to support what we're building, you can leave a donation via PayPal.</p>
+  </div>
+  <div class="donate-box reveal">
+    <div>
+      <h3>Buy the team a coffee ☕</h3>
+      <p>Every contribution helps us keep improving our tools and taking on more ambitious projects for clients like you.</p>
+    </div>
+    <a class="btn btn-paypal" href="https://www.paypal.com/donate?business=amisementhearity@gmail.com&currency_code=ZAR&item_name=Support+A.M+Development" target="_blank" rel="noopener">Donate via PayPal →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="eyebrow">Get in touch</div>
+    <h2 class="section-title">Contact us to see past projects</h2>
+    <p class="section-lede">Have a question, or want to see our portfolio before booking? Reach out — we reply fast.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-cards reveal">
+      <div class="contact-card">
+        <div class="ic">✉</div>
+        <div><b>Email</b><span>amusementherith@icloud.com</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="ic">☎</div>
+        <div><b>WhatsApp</b><span>082 794 8113</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="ic">📍</div>
+        <div><b>Location</b><span>Nelspruit, Mpumalanga, South Africa</span></div>
+      </div>
+      <div class="contact-card">
+        <div class="ic">🕐</div>
+        <div><b>Hours</b><span>A.M to A.M — we're always working on something</span></div>
+      </div>
+    </div>
+
+    <div class="map-frame reveal">
+      <iframe
+        src="https://www.google.com/maps?q=Nelspruit,+Mpumalanga,+South+Africa&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-left">
+    <svg width="30" height="30" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="21" cy="21" r="19.5" stroke="#00d9ff" stroke-width="1.2"/>
+      <text x="21" y="26" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700" fill="#e7f1ff">AM</text>
+    </svg>
+    <p>© <span id="year"></span> A.M Development — Nelspruit, South Africa. All rights reserved.</p>
+  </div>
+  <div class="foot-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#booking">Book</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------- Constellation background ----------
+  (function(){
+    const canvas = document.getElementById('constellation');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars;
+    const LINK_DIST = 130;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function sizeCanvas(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    function makeStars(){
+      const count = Math.min(150, Math.floor((w * h) / 9000));
+      stars = Array.from({length: count}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        r: Math.random() * 1.4 + 0.6,
+        twinkle: Math.random() * Math.PI * 2
+      }));
+    }
+
+    function step(){
+      ctx.clearRect(0, 0, w, h);
+
+      // update
+      stars.forEach(s => {
+        s.x += s.vx; s.y += s.vy;
+        s.twinkle += 0.02;
+        if (s.x < 0 || s.x > w) s.vx *= -1;
+        if (s.y < 0 || s.y > h) s.vy *= -1;
+      });
+
+      // links between nearby stars
+      for (let i = 0; i < stars.length; i++){
+        for (let j = i + 1; j < stars.length; j++){
+          const a = stars[i], b = stars[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < LINK_DIST){
+            const alpha = (1 - dist / LINK_DIST) * 0.35;
+            ctx.strokeStyle = `rgba(125,249,255,${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // stars (sparkle)
+      stars.forEach(s => {
+        const glow = 0.55 + Math.sin(s.twinkle) * 0.45;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(231,241,255,${glow})`;
+        ctx.shadowColor = 'rgba(125,249,255,0.9)';
+        ctx.shadowBlur = 6;
+        ctx.fill();
+      });
+      ctx.shadowBlur = 0;
+
+      if (!reduced) requestAnimationFrame(step);
+    }
+
+    sizeCanvas();
+    makeStars();
+    step();
+    window.addEventListener('resize', () => { sizeCanvas(); makeStars(); if(reduced) step(); });
+  })();
+</script>
+<script>
+  // Mobile nav toggle
+  const burger = document.getElementById('burger');
+  const nav = document.getElementById('siteNav');
+  burger.addEventListener('click', () => {
+    nav.classList.toggle('open');
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Booking form -> Formspree AJAX submit
+  const form = document.getElementById('bookingForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.textContent = 'Sending...';
+    status.className = 'mono';
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if(response.ok){
+        status.textContent = '✓ Booking sent! We will confirm your slot shortly.';
+        status.className = 'mono ok';
+        form.reset();
+      } else {
+        response.json().then(data => {
+          status.textContent = (data.errors ? data.errors.map(e=>e.message).join(', ') : 'Something went wrong. Please try again or WhatsApp us directly.');
+          status.className = 'mono err';
+        }).catch(() => {
+          status.textContent = 'Something went wrong. Please try again or WhatsApp us directly.';
+          status.className = 'mono err';
+        });
+      }
+    }).catch(() => {
+      status.textContent = 'Network error — please try again or WhatsApp us directly.';
+      status.className = 'mono err';
+    });
+  });
+</script>
+</body>
+</html>
